@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aisyah Kerudung - Produk</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+    h1 { color: #0a0a0a; }
+    .products { display: flex; flex-wrap: wrap; gap: 20px; }
+    .product { border: 1px solid #ccc; padding: 10px; width: 220px; cursor: pointer; border-radius: 6px; }
+    .product h3 { margin: 0; color: #007bff; }
+    .product h3:hover { text-decoration: underline; }
+    .product img { width: 100%; height: auto; display: none; margin-top: 10px; border-radius: 4px; }
+    .desc { display: none; margin-top: 10px; }
+    .add-cart, .buy-now {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+    .add-cart:hover { background-color: #218838; }
+    .buy-now {
+      background-color: #007bff;
+      margin-top: 5px;
+    }
+    .buy-now:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Aisyah Kerudung - Produk</h1>
+
+  <div class="products">
+    <div class="product" onclick="toggleDetails(event, this)">
+      <h3>Bella Square</h3>
+      <p>Rp15.000</p>
+      <img src="https://via.placeholder.com/200x200?text=Bella+Square" alt="Bella Square" />
+      <div class="desc">
+        <p>Kerudung Bella Square dengan bahan lembut dan nyaman dipakai sehari-hari.</p>
+      </div>
+      <button class="add-cart" onclick="addToCart(event, this)">+ Keranjang</button>
+    </div>
+
+    <div class="product" onclick="toggleDetails(event, this)">
+      <h3>Paris Jadul Merk Farisah</h3>
+      <p>Rp20.000</p>
+      <img src="https://via.placeholder.com/200x200?text=Paris+Jadul+Merk+Farisah" alt="Paris Jadul Merk Farisah" />
+      <div class="desc">
+        <p>Kerudung Paris Jadul merk Farisah, cocok untuk tampilan klasik dan elegan.</p>
+      </div>
+      <button class="add-cart" onclick="addToCart(event, this)">+ Keranjang</button>
+    </div>
+
+    <div class="product" onclick="toggleDetails(event, this)">
+      <h3>Pashmina Viscose</h3>
+      <p>Rp35.000</p>
+      <img src="https://via.placeholder.com/200x200?text=Pashmina+Viscose" alt="Pashmina Viscose" />
+      <div class="desc">
+        <p>Pashmina berbahan viscose yang lembut dan mudah dibentuk.</p>
+      </div>
+      <button class="add-cart" onclick="addToCart(event, this)">+ Keranjang</button>
+    </div>
+
+    <div class="product" onclick="toggleDetails(event, this)">
+      <h3>Pashmina Kaos</h3>
+      <p>Rp35.000</p>
+      <img src="https://via.placeholder.com/200x200?text=Pashmina+Kaos" alt="Pashmina Kaos" />
+      <div class="desc">
+        <p>Pashmina bahan kaos yang nyaman dan ringan dipakai.</p>
+      </div>
+      <button class="add-cart" onclick="addToCart(event, this)">+ Keranjang</button>
+    </div>
+  </div>
+
+  <script>
+    // Toggle deskripsi dan foto saat klik produk (tapi tidak tombol)
+    function toggleDetails(event, product) {
+      if (event.target.tagName.toLowerCase() === 'button') return; // jangan toggle kalau klik tombol
+      const img = product.querySelector('img');
+      const desc = product.querySelector('.desc');
+      if (img.style.display === 'block') {
+        img.style.display = 'none';
+        desc.style.display = 'none';
+      } else {
+        img.style.display = 'block';
+        desc.style.display = 'block';
+      }
+    }
+
+    // Tambah produk ke "keranjang" dan munculkan tombol beli
+    function addToCart(event, button) {
+      event.stopPropagation(); // supaya ga toggle detail produk saat klik tombol
+      const product = button.closest('.product');
+
+      if (button.disabled) return; // sudah dimasukkan keranjang
+
+      button.disabled = true;
+      button.innerText = 'Sudah di Keranjang';
+
+      // Tambah tombol Beli Sekarang jika belum ada
+      if (!product.querySelector('.buy-now')) {
+        const buyBtn = document.createElement('button');
+        buyBtn.className = 'buy-now';
+        buyBtn.innerText = 'Beli Sekarang';
+        buyBtn.onclick = function(e) {
+          e.stopPropagation();
+          // Ambil data produk
+          const nama = product.querySelector('h3').innerText;
+          const harga = product.querySelector('p').innerText;
+          // Simpan produk ke sessionStorage sebagai array JSON
+          let keranjang = JSON.parse(sessionStorage.getItem('keranjang') || '[]');
+          keranjang.push({ nama, harga });
+          sessionStorage.setItem('keranjang', JSON.stringify(keranjang));
+          // Redirect ke halaman checkout
+          window.location.href = 'checkout.html';
+        };
+        product.appendChild(buyBtn);
+      }
+    }
+  </script>
+</body>
+</html>

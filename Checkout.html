@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout - Aisyah Kerudung</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h1 { color: #007bff; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background-color: #f0f0f0; }
+    .total { font-weight: bold; }
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover { background-color: #218838; }
+  </style>
+</head>
+<body>
+  <h1>Checkout</h1>
+
+  <table id="cart-table">
+    <thead>
+      <tr><th>Produk</th><th>Harga</th></tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+      <tr>
+        <td class="total">Total</td>
+        <td class="total" id="total-harga">Rp0</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <button onclick="konfirmasiPembayaran()">Bayar Sekarang</button>
+
+  <script>
+    function formatRupiah(angka) {
+      return 'Rp' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function hitungTotal(items) {
+      let total = 0;
+      items.forEach(item => {
+        let harga = item.harga.replace(/[^0-9]/g, '');
+        total += parseInt(harga);
+      });
+      return total;
+    }
+
+    function loadKeranjang() {
+      const tbody = document.querySelector('#cart-table tbody');
+      const keranjang = JSON.parse(sessionStorage.getItem('keranjang') || '[]');
+
+      if (keranjang.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="2">Keranjang kosong.</td></tr>';
+        document.getElementById('total-harga').innerText = 'Rp0';
+        return;
+      }
+
+      tbody.innerHTML = '';
+      keranjang.forEach(item => {
+        const tr = document.createElement('tr');
+        const tdNama = document.createElement('td');
+        tdNama.innerText = item.nama;
+        const tdHarga = document.createElement('td');
+        tdHarga.innerText = item.harga;
+        tr.appendChild(tdNama);
+        tr.appendChild(tdHarga);
+        tbody.appendChild(tr);
+      });
+
+      const total = hitungTotal(keranjang);
+      document.getElementById('total-harga').innerText = formatRupiah(total);
+    }
+
+    function konfirmasiPembayaran() {
+      const keranjang = JSON.parse(sessionStorage.getItem('keranjang') || '[]');
+      if (keranjang.length === 0) {
+        alert('Keranjang kosong, silakan pilih produk terlebih dahulu.');
+        window.location.href = 'index.html';
+        return;
+      }
+      alert('Terima kasih sudah membeli. Total pembayaran: ' + document.getElementById('total-harga').innerText);
+      sessionStorage.removeItem('keranjang');
+      window.location.href = 'index.html';
+    }
+
+    loadKeranjang();
+  </script>
+</body>
+</html>
