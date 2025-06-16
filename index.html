@@ -23,12 +23,61 @@
     .product h3:hover { text-decoration: underline; }
     .product img { width: 100%; height: auto; display: none; margin-top: 10px; }
     .product .desc { display: none; margin-top: 10px; }
-    .add-cart, .buy-now, .pembayaran-btn { background-color: #28a745; color: white; border: none; padding: 5px; cursor: pointer; margin-top: 10px; width: 100%; }
-    .buy-now { background-color: #007bff; }
+    .add-cart, .buy-now, .pembayaran-btn { border: none; padding: 5px; cursor: pointer; margin-top: 10px; width: 100%; border-radius: 5px; }
+    .add-cart { background-color: #28a745; color: white; }
+    .buy-now { background-color: #007bff; color: white; }
     .buy-now:hover { background-color: #0056b3; }
-    .pembayaran-btn:hover { background-color: #218838; }
-    .social-media a { margin-right: 10px; text-decoration: none; }
+    .add-cart:hover { background-color: #218838; }
+
+    /* Tombol pembayaran horizontal & warna brand */
+    .pembayaran-btn {
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      margin: 5px;
+      border-radius: 5px;
+      width: auto;
+      min-width: 100px;
+      font-weight: bold;
+      text-align: center;
+      transition: opacity 0.3s ease;
+    }
+
+    .pembayaran-gopay {
+      background-color: #28a745;
+    }
+
+    .pembayaran-ovo {
+      background-color: #4b0082;
+    }
+
+    .pembayaran-qris {
+      background-color: #000;
+      color: #fff;
+    }
+
+    .pembayaran-bca,
+    .pembayaran-bri,
+    .pembayaran-mandiri {
+      background-color: #0066cc;
+      color: white;
+    }
+
+    .pembayaran-bni {
+      background-color: #ff6600;
+      color: white;
+    }
+
+    .pembayaran-btn:hover {
+      opacity: 0.8;
+    }
+
+    .social-media a { margin-right: 10px; text-decoration: none; color: #007bff; }
+    .social-media a:hover { text-decoration: underline; }
+
     footer { margin-top: 20px; text-align: center; }
+
     #checkout { padding: 20px; background: #f9f9f9; border-top: 2px solid #ccc; }
   </style>
 
@@ -56,6 +105,7 @@
         qris: "Scan QRIS di halaman checkout",
         bca: "Bank BCA: 1234567890 a.n Aisyah Kerudung",
         mandiri: "Bank Mandiri: 9876543210 a.n Aisyah Kerudung",
+        bri: "Bank BRI: 3344556677 a.n Aisyah Kerudung",
         bni: "Bank BNI: 5678901234 a.n Aisyah Kerudung"
       };
       document.getElementById("info-pembayaran").innerText = info[metode] || "Pilih metode pembayaran";
@@ -176,12 +226,15 @@
   <section>
     <h2>Pembayaran</h2>
     <p>Pilih metode pembayaran:</p>
-    <button class="pembayaran-btn" onclick="tampilkanPembayaran('gopay')">GoPay</button>
-    <button class="pembayaran-btn" onclick="tampilkanPembayaran('ovo')">OVO</button>
-    <button class="pembayaran-btn" onclick="tampilkanPembayaran('qris')">QRIS</button>
-    <button class="pembayaran-btn" onclick="tampilkanPembayaran('bca')">Bank BCA</button>
-    <button class="pembayaran-btn" onclick="tampilkanPembayaran('mandiri')">Bank Mandiri</button>
-    <button class="pembayaran-btn" onclick="tampilkanPembayaran('bni')">Bank BNI</button>
+    <div style="display: flex; flex-wrap: wrap;">
+      <button class="pembayaran-btn pembayaran-gopay" onclick="tampilkanPembayaran('gopay')">GoPay</button>
+      <button class="pembayaran-btn pembayaran-ovo" onclick="tampilkanPembayaran('ovo')">OVO</button>
+      <button class="pembayaran-btn pembayaran-qris" onclick="tampilkanPembayaran('qris')">QRIS</button>
+      <button class="pembayaran-btn pembayaran-bca" onclick="tampilkanPembayaran('bca')">Bank BCA</button>
+      <button class="pembayaran-btn pembayaran-mandiri" onclick="tampilkanPembayaran('mandiri')">Bank Mandiri</button>
+      <button class="pembayaran-btn pembayaran-bri" onclick="tampilkanPembayaran('bri')">Bank BRI</button>
+      <button class="pembayaran-btn pembayaran-bni" onclick="tampilkanPembayaran('bni')">Bank BNI</button>
+    </div>
     <p id="info-pembayaran" style="font-weight: bold; margin-top: 10px;"></p>
   </section>
 
@@ -189,7 +242,7 @@
     <h2>Checkout</h2>
     <div id="checkout-list" style="margin-bottom: 10px;"></div>
     <p id="checkout-total" style="font-weight: bold;"></p>
-    <button class="pembayaran-btn" onclick="konfirmasiCheckout()">Konfirmasi Checkout</button>
+    <button class="pembayaran-btn pembayaran-gopay" onclick="konfirmasiCheckout()">Konfirmasi Checkout</button>
   </section>
 
   <footer>
